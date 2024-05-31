@@ -33,6 +33,30 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
-Route::get('/admin/dashboard', [AdminController::class, 'adminDashboard'])->name('admin.dashboard');
-Route::get('/teacher/dashboard', [TeacherController::class, 'teacherDashboard'])->name('teacher.dashboard');
-Route::get('/student/dashboard', [StudentController::class, 'studentDashboard'])->name('student.dashboard');
+// Admin Middleware
+
+Route::middleware(['auth', 'role:admin'])->group(function(){
+
+    Route::get('/admin/dashboard', [AdminController::class, 'adminDashboard'])->name('admin.dashboard');
+
+});//End group of Admin Middleware
+
+// Starting of Teacher Middleware
+Route::middleware(['auth', 'role:teacher'])->group(function(){
+
+    Route::get('/teacher/dashboard', [TeacherController::class, 'teacherDashboard'])->name('teacher.dashboard');
+
+});//End group of Teacher Middleware
+
+
+//Starting of Student Middleware
+
+Route::middleware(['auth', 'role:student'])->group(function(){
+
+    Route::get('/student/dashboard', [StudentController::class, 'studentDashboard'])->name('student.dashboard');
+
+});//End group of student Middleware
+
+
+
+
